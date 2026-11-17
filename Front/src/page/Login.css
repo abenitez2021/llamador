@@ -1,0 +1,38 @@
+/* CANOSYS: conserva el acceso centrado sobre el degradado oficial de ENTER LLAMADOR. */
+.enter-login-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* CANOSYS: recupera la profundidad visual del acceso instalado sin alterar otras vistas. */
+.enter-login-card {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.34) !important;
+  border-radius: 14px !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 20px 48px rgba(24, 42, 82, 0.26) !important;
+}
+
+/* CANOSYS: reutiliza el mismo recurso institucional del pendrive, ya presente en public/empresa.jpg. */
+.enter-login-card-content {
+  /* CANOSYS: código anterior conservado como referencia; css-loader intentaba resolver esta URL como módulo. */
+  /* background-image: url("/empresa.jpg"); */
+  /* CANOSYS: Login.js asigna la misma imagen desde public mediante una URL válida en ejecución. */
+  background-position: bottom -150px right -50px;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-color: rgba(255, 255, 255, 0.88);
+  background-blend-mode: lighten;
+}
+
+/* CANOSYS: adapta la tarjeta a equipos compactos sin modificar su composición funcional. */
+@media (max-width: 600px) {
+  .enter-login-page {
+    padding-bottom: 24px !important;
+  }
+
+  .enter-login-card-content {
+    background-position: bottom -70px right -25px;
+    background-size: 72%;
+  }
+}

@@ -1,0 +1,682 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #000; /* en caso de que el video no cargue */
+  background: linear-gradient(to bottom right, #8e44ad, #22c0c3) !important;
+  /*background: url(../assets/images/background.jpg) no-repeat cover;*/
+  min-height: 100vh;
+  font-size: 1.1rem !important;
+}
+
+.pantalla {
+  background: none !important;;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", "Ubuntu", sans-serif;
+}
+
+.logo img {
+  max-width: 90%;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.1));
+}
+
+.contenedor {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.panel {
+  border-radius: 16px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.07);
+  backdrop-filter: blur(6px);
+}
+
+.turnos {
+  flex: 1;
+  padding: 24px;
+}
+
+.panel-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel.reloj, .panel.clima {
+  padding: 20px;
+  text-align: center;
+}
+
+.hora-digital {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.icono-clima {
+  width: 60px;
+  height: 60px;
+  margin: 10px auto;
+}
+
+.panel.video {
+  flex: 1;
+  overflow: hidden;
+}
+
+.panel.video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.titulo-tabla {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 8px;
+}
+
+.animacion-fade {
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* CANOSYS: código anterior conservado como referencia; el estado de espera dependía sólo de márgenes inline. */
+/* .animacion-fade > h3, .animacion-fade > h5 { margin-top: 20px; } */
+/* CANOSYS: compone el estado de espera como una pieza central legible a distancia. */
+.pantalla .estado-espera-publico {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(16px, 2.2vw, 42px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* CANOSYS: refuerza visualmente que la pantalla se encuentra activa y esperando un aviso. */
+.pantalla .espera-icono {
+  width: clamp(68px, 6vw, 112px);
+  height: clamp(68px, 6vw, 112px);
+  margin-bottom: clamp(14px, 2vh, 28px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 34px rgba(4, 30, 67, 0.24), inset 0 0 0 8px rgba(255, 255, 255, 0.04);
+  animation: esperaPulso 2.8s ease-in-out infinite;
+}
+
+.pantalla .espera-icono .MuiSvgIcon-root {
+  font-size: clamp(38px, 3.4vw, 66px) !important;
+}
+
+/* CANOSYS: da prioridad al estado principal sin ocupar espacio excesivo del video. */
+.pantalla .espera-titulo {
+  margin: 0 !important;
+  font-size: clamp(2.25rem, 4vw, 5.2rem) !important;
+  font-weight: 850;
+  line-height: 1.06;
+  letter-spacing: 0.025em;
+  text-shadow: 0 7px 22px rgba(3, 31, 69, 0.32);
+}
+
+.pantalla .espera-separador {
+  width: min(190px, 34%);
+  height: 4px;
+  margin: clamp(18px, 2.5vh, 34px) auto;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #22c0c3, transparent);
+  box-shadow: 0 0 18px rgba(34, 192, 195, 0.62);
+}
+
+.pantalla .espera-subtitulo {
+  margin: 0 !important;
+  font-size: clamp(1.2rem, 1.65vw, 2.15rem) !important;
+  font-weight: 750;
+  line-height: 1.28;
+  letter-spacing: 0.035em;
+}
+
+.pantalla .espera-detalle {
+  max-width: 760px;
+  margin: clamp(10px, 1.4vh, 20px) auto 0 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: clamp(0.95rem, 1.15vw, 1.4rem) !important;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+@keyframes esperaPulso {
+  0%, 100% { transform: scale(1); box-shadow: 0 14px 34px rgba(4, 30, 67, 0.24), inset 0 0 0 8px rgba(255, 255, 255, 0.04); }
+  50% { transform: scale(1.05); box-shadow: 0 18px 42px rgba(4, 30, 67, 0.3), 0 0 24px rgba(34, 192, 195, 0.22), inset 0 0 0 8px rgba(255, 255, 255, 0.06); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+video#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill; /* cambia cover por fill o contain si prefieres */
+  z-index: -1;
+  opacity: 0.55; /* más alto si querés más visibilidad */
+  filter: brightness(1) saturate(1.1) contrast(1.05);
+  pointer-events: none;
+}
+
+
+
+.panel-translucido {
+  background:none !important;;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Letras específicas más grandes */
+.titulo-tabla,
+.hora-digital,
+.panel.reloj h6,
+.panel.clima h6 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white !important;
+}
+
+/* Tamaños individuales adicionales si querés ajustar más fino */
+.hora-digital {
+  font-size: 3.5rem;
+  color: white !important;
+}
+
+/* CANOSYS: código anterior conservado como referencia; el selector global afectaba todas las tablas. */
+/* .MuiTableCell-root { border-bottom: 1px solid black !important; } */
+/* CANOSYS: limita bordes y transparencia a la tabla especial de la pantalla pública. */
+.pantalla .MuiTableCell-root {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28) !important;
+}
+
+.pantalla .MuiTableCell-head,
+.pantalla .MuiTableCell-body,
+.pantalla .MuiTableRow-root,
+.pantalla .MuiTableContainer-root,
+.pantalla .MuiTable-root {
+  background-color: transparent !important;
+}
+
+.pantalla .MuiTableRow-root:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Títulos */
+.titulo-tabla {
+  color: white !important;
+  font-size: 1.3rem;
+}
+.pantalla, .pantalla * {
+  text-transform: uppercase;
+  color: white !important; /* texto blanco */
+  font-size: 1.1rem; /* un poco más grande por defecto */
+}
+.titulo-tabla {
+  background: none !important;;
+}
+
+.hora-digital {
+  color: #121212;
+}
+
+.panel-translucido {
+  background:none !important;;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+.panel.clima {
+  background-image: none !important;
+  background:none !important;
+}
+
+.icono-clima {
+  width: 90px;
+  height: 90px;
+  margin: 10px auto;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.4));
+}
+
+/* CANOSYS: código anterior conservado como referencia; afectaba tarjetas fuera de PublicTurnos. */
+/* .MuiCardContent-root { background-image: url('../assets/images/logo-back-cliente.jpg'); } */
+/* CANOSYS: código de ENTER_TURNERO conservado como referencia; ENTER_LLAMADOR no incluye ese recurso
+   ni utiliza CardContent en su pantalla pública de box libre. */
+/*
+.pantalla .MuiCardContent-root {
+  background-image: url('../assets/images/logo-back-cliente.jpg');
+  background-position: bottom -150px right -50px;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-color: rgba(255,255,255,0.85);
+  background-blend-mode: lighten;
+}
+*/
+
+.swal-text{  
+  font-size: 22px !important;
+  font-weight: bold;
+  line-height: 1.6;
+  text-align: center;
+}
+
+
+.swal-cerrar-sesion .swal-button {
+  font-size: 20px !important;
+  padding: 8px 20px;
+  border-radius: 6px;
+}
+
+
+.alerta-turnos .swal-text{  
+  font-size: 18px !important;
+  font-weight: bold;
+  line-height: 1.6;
+  text-align: center;}
+
+  .alerta-turnos .swal-title {
+    font-size: 24px !important;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .alerta-turnos .btn-confirmar {
+    background: linear-gradient(135deg, #cccccc, #eeeeee);
+    color: white !important;
+    font-size: 16px !important;
+    border-radius: 8px;
+  }
+  
+  .alerta-turnos .btn-cancelar {
+    color: #333 !important;
+    font-size: 16px !important;
+    border-radius: 8px;
+  }
+
+/* CANOSYS: ajustes mínimos de UX para la pantalla pública horizontal. */
+html.public-turnos-activo,
+body.public-turnos-activo {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.public-turnos-activo #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* CANOSYS: anula el overflow y los márgenes heredados de AppLayoutPublic sólo para PublicTurnos. */
+body.public-turnos-activo main,
+body.public-turnos-activo #root > div {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.public-turnos-activo .MuiContainer-root {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* CANOSYS: respaldo visual para navegadores que conserven una barra pese al overflow bloqueado. */
+body.public-turnos-activo *,
+html.public-turnos-activo * {
+  scrollbar-width: none;
+}
+
+body.public-turnos-activo *::-webkit-scrollbar,
+html.public-turnos-activo *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* CANOSYS: código anterior conservado como referencia. */
+/*
+.pantalla {
+  height: 100vh;
+  padding: 20px;
+}
+*/
+
+/* CANOSYS: ocupa exactamente el viewport y evita barras de desplazamiento en cualquier resolución. */
+.pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(12px, 1.3vw, 24px);
+}
+
+.pantalla .logo {
+  flex: 0 0 auto;
+  /* CANOSYS: código anterior conservado como referencia. */
+  /* height: clamp(76px, 14vh, 156px); */
+  /* CANOSYS: amplía levemente la presencia institucional sin desplazar el contenido principal. */
+  height: clamp(82px, 15vh, 168px);
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pantalla .logo img {
+  /* CANOSYS: código anterior conservado como referencia. */
+  /* width: min(1000px, 76vw) !important; */
+  /* max-width: 90%; */
+  /* CANOSYS: acompaña el leve aumento del contenedor manteniendo la proporción original. */
+  width: min(1100px, 80vw) !important;
+  max-width: 94%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pantalla .contenedor {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  gap: clamp(14px, 1.55vw, 30px);
+  margin-top: clamp(6px, 0.8vh, 10px);
+}
+
+.pantalla .turnos,
+.pantalla .panel-info-publico {
+  min-width: 0;
+  min-height: 0;
+}
+
+.pantalla .turnos {
+  overflow: hidden;
+  padding: clamp(16px, 1.5vw, 28px);
+}
+
+.pantalla .turnos .MuiTableContainer-root {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* CANOSYS: aumenta la lectura de los últimos llamados desde varios metros de distancia. */
+.pantalla .turnos h1 {
+  margin: clamp(4px, 0.8vh, 12px) 0;
+  font-size: clamp(1.55rem, 2.05vw, 2.8rem) !important;
+  line-height: 1.15;
+  letter-spacing: 0.025em;
+}
+
+.pantalla .turnos .MuiTableHead-root .MuiTableCell-root {
+  padding: clamp(10px, 1.1vh, 16px) clamp(8px, 0.9vw, 16px);
+  font-size: clamp(1rem, 1.22vw, 1.65rem) !important;
+  line-height: 1.2;
+}
+
+.pantalla .turnos .MuiTableBody-root .MuiTableCell-root {
+  padding: clamp(13px, 1.55vh, 22px) clamp(8px, 0.9vw, 16px);
+  font-size: clamp(1.25rem, 1.65vw, 2.15rem) !important;
+  font-weight: 750;
+  line-height: 1.18;
+}
+
+.pantalla .turnos .MuiTableBody-root .MuiTableCell-root:first-child,
+.pantalla .turnos .MuiTableBody-root .MuiTableCell-root:last-child {
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* CANOSYS: columna derecha adaptable sin depender de estilos inline. */
+.pantalla .panel-info-publico {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.05vw, 20px);
+  overflow: hidden;
+}
+
+.pantalla .paneles-estado {
+  flex: 0 0 auto;
+  display: flex;
+  gap: clamp(10px, 1.05vw, 20px);
+  min-width: 0;
+}
+
+.pantalla .paneles-estado > .panel {
+  min-width: 0;
+}
+
+.pantalla .panel.reloj,
+.pantalla .panel.clima {
+  padding: clamp(10px, 1vw, 18px);
+}
+
+/* CANOSYS: reloj y clima comparten iconografía, contenedor y proporciones. */
+.pantalla .titulo-estado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(7px, 0.65vw, 12px);
+  margin-bottom: clamp(4px, 0.55vh, 8px);
+  font-size: clamp(1rem, 1.25vw, 1.55rem) !important;
+  line-height: 1.15;
+}
+
+.pantalla .icono-estado {
+  width: clamp(32px, 2.5vw, 46px);
+  height: clamp(32px, 2.5vw, 46px);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.14);
+}
+
+.pantalla .icono-estado .MuiSvgIcon-root {
+  font-size: clamp(20px, 1.55vw, 30px) !important;
+}
+
+.pantalla .hora-digital {
+  font-size: clamp(2.1rem, 3.1vw, 4rem) !important;
+  line-height: 1;
+}
+
+.pantalla .icono-clima {
+  width: clamp(60px, 5vw, 94px);
+  height: clamp(60px, 5vw, 94px);
+  margin: auto;
+}
+
+/* CANOSYS: asocia visualmente la descripción dinámica con el icono meteorológico. */
+.pantalla .descripcion-clima-icono {
+  margin-top: clamp(2px, 0.35vh, 6px);
+  color: #ffffff;
+  font-size: clamp(0.86rem, 0.95vw, 1.15rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+/* CANOSYS: código anterior conservado como referencia. */
+/*
+.panel.video {
+  flex: 1;
+}
+.panel.video video {
+  height: 100%;
+  object-fit: cover;
+}
+*/
+
+/* CANOSYS: mantiene el material institucional en 16:9 sin estiramiento vertical. */
+.pantalla .panel.video {
+  flex: 0 1 auto;
+  width: 100%;
+  max-height: calc(100vh - clamp(230px, 29vh, 330px));
+  aspect-ratio: 16 / 9;
+  align-self: stretch;
+  background: rgba(5, 20, 43, 0.62) !important;
+  overflow: hidden;
+}
+
+.pantalla .panel.video video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  background: rgba(5, 20, 43, 0.86);
+}
+
+/* CANOSYS: reutiliza el estado existente borde-llamado como alerta temporal a pantalla completa. */
+.pantalla .turnos.borde-llamado {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: clamp(28px, 4vw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 92, 92, 0.44), transparent 38%),
+    linear-gradient(145deg, #8f0712 0%, #c51624 48%, #8f0712 100%) !important;
+  box-shadow: inset 0 0 0 clamp(8px, 0.75vw, 14px) rgba(255, 255, 255, 0.18);
+  backdrop-filter: none;
+}
+
+.pantalla .borde-llamado .animacion-fade {
+  width: min(1280px, 94vw);
+}
+
+.pantalla .llamado-label {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: clamp(1.8rem, 3.2vw, 4.2rem) !important;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+.pantalla .llamado-codigo {
+  margin: clamp(8px, 1.2vh, 18px) 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(7rem, 19vw, 18rem) !important;
+  font-weight: 950;
+  line-height: 0.9;
+  letter-spacing: 0.035em;
+  text-shadow: 0 12px 34px rgba(67, 0, 0, 0.45);
+}
+
+.pantalla .llamado-indicacion {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-size: clamp(1.35rem, 2.2vw, 3rem) !important;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+}
+
+.pantalla .llamado-box {
+  width: fit-content;
+  margin: clamp(8px, 1vh, 16px) auto 0 !important;
+  padding: clamp(10px, 1.2vh, 18px) clamp(28px, 3vw, 58px);
+  border-radius: clamp(14px, 1.5vw, 26px);
+  background: #ffffff;
+  color: #9c0c17 !important;
+  font-size: clamp(3.2rem, 7.2vw, 8.5rem) !important;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 16px 38px rgba(66, 0, 0, 0.32);
+}
+
+.pantalla .llamado-visitante {
+  margin-top: clamp(16px, 2vh, 30px) !important;
+  color: #ffffff !important;
+  font-size: clamp(1.4rem, 2.4vw, 3.1rem) !important;
+  font-weight: 750;
+}
+
+/* CANOSYS: preserva la composición horizontal aun en pantallas con menor altura. */
+@media (max-height: 760px) {
+  .pantalla .logo {
+    height: clamp(62px, 11vh, 84px);
+  }
+
+  .pantalla .turnos .MuiTableBody-root .MuiTableCell-root {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  .pantalla .panel.reloj,
+  .pantalla .panel.clima {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+
+/* CANOSYS: adapta la jerarquía del llamado rojo al producto de box libre sin cambiar su información. */
+.pantalla .llamado-box-libre {
+  width: min(1500px, 94vw);
+  margin: clamp(18px, 3vh, 42px) auto !important;
+  color: #ffffff !important;
+  font-size: clamp(5rem, 12vw, 13rem) !important;
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: 0.025em;
+  overflow-wrap: anywhere;
+  text-shadow: 0 14px 38px rgba(67, 0, 0, 0.48);
+}
+
+/* CANOSYS: conserva la indicación existente con lectura clara a distancia. */
+.pantalla .llamado-indicacion-box-libre {
+  margin-top: clamp(14px, 2vh, 30px) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: clamp(1.3rem, 2.15vw, 2.8rem) !important;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: 0.055em;
+}

@@ -1,0 +1,247 @@
+/* CANOSYS: superficie principal del llamador de box libre. */
+.llamador-simple-page {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(18px, 2.2vw, 32px);
+  box-sizing: border-box;
+}
+
+/* CANOSYS: cabecera operativa con la jerarquía visual de ENTER_TURNERO y contenido propio del llamador. */
+.llamador-simple-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.5vw, 22px);
+  padding: clamp(18px, 2vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(115deg, rgba(79, 44, 137, 0.34), rgba(8, 127, 140, 0.3));
+  box-shadow: 0 12px 30px rgba(31, 39, 78, 0.16);
+  backdrop-filter: blur(12px);
+}
+
+.llamador-simple-header-icon {
+  width: clamp(54px, 5vw, 72px);
+  height: clamp(54px, 5vw, 72px);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.035);
+}
+
+.llamador-simple-header-icon .MuiSvgIcon-root {
+  font-size: clamp(30px, 3vw, 44px);
+}
+
+.llamador-simple-title {
+  margin: 0 !important;
+  color: #ffffff;
+  font-size: clamp(1.65rem, 2.4vw, 2.5rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.015em !important;
+}
+
+.llamador-simple-subtitle {
+  margin-top: 6px !important;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(0.92rem, 1.15vw, 1.08rem) !important;
+  line-height: 1.4 !important;
+}
+
+/* CANOSYS: tarjetas claras y consistentes para configuración y acción principal. */
+.llamador-simple-card {
+  height: 100%;
+  min-height: 390px;
+  padding: clamp(20px, 2.2vw, 30px);
+  box-sizing: border-box;
+  border: 1px solid rgba(36, 68, 95, 0.12);
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 12px 30px rgba(28, 48, 74, 0.12) !important;
+}
+
+.llamador-simple-config {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.llamador-simple-section-icon {
+  width: 44px;
+  height: 44px;
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  color: #087f8c;
+  background: rgba(8, 127, 140, 0.1);
+}
+
+.llamador-simple-section-title {
+  color: #24445f;
+  font-weight: 800 !important;
+}
+
+/* CANOSYS: destaca la última llamada persistente con lectura inmediata. */
+.llamador-simple-last-call {
+  margin-top: auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  background: #f7f9fb;
+}
+
+.llamador-simple-last-call.has-data {
+  border-color: rgba(8, 127, 140, 0.24);
+  background: linear-gradient(135deg, rgba(8, 127, 140, 0.08), rgba(34, 192, 195, 0.06));
+}
+
+.llamador-simple-last-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #087f8c;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(28, 48, 74, 0.1);
+}
+
+.llamador-simple-last-label {
+  display: block;
+  color: #607688;
+  font-weight: 700 !important;
+  letter-spacing: 0.025em !important;
+  text-transform: uppercase;
+}
+
+.llamador-simple-last-value {
+  margin-top: 2px !important;
+  color: #24445f;
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+}
+
+/* CANOSYS: concentra la acción primaria y comunica claramente su estado. */
+.llamador-simple-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.llamador-simple-action::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  top: -150px;
+  right: -110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 192, 195, 0.14), transparent 68%);
+  pointer-events: none;
+}
+
+.llamador-simple-action-icon {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  color: #087f8c;
+  background: linear-gradient(135deg, rgba(8, 127, 140, 0.12), rgba(34, 192, 195, 0.18));
+  box-shadow: 0 10px 24px rgba(8, 127, 140, 0.14);
+}
+
+.llamador-simple-action-icon.active {
+  color: #2e7d32;
+  background: rgba(46, 125, 50, 0.11);
+}
+
+.llamador-simple-action-icon .MuiSvgIcon-root {
+  font-size: 44px;
+}
+
+.llamador-simple-action-title {
+  color: #24445f;
+  font-size: clamp(1.2rem, 1.65vw, 1.55rem) !important;
+  font-weight: 800 !important;
+}
+
+.llamador-simple-action-copy {
+  max-width: 610px;
+  margin-bottom: 24px !important;
+  color: #5b7083;
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+}
+
+.llamador-simple-action-copy b {
+  color: #24445f;
+}
+
+.llamador-simple-main-button {
+  min-width: min(360px, 100%);
+  padding: 15px 30px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #087f8c, #1596a2) !important;
+  color: #ffffff !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  box-shadow: 0 10px 22px rgba(8, 127, 140, 0.24) !important;
+}
+
+.llamador-simple-main-button.Mui-disabled {
+  background: #c8d2da !important;
+  color: rgba(36, 68, 95, 0.58) !important;
+  box-shadow: none !important;
+}
+
+.llamador-simple-shortcut {
+  margin-top: 16px !important;
+  color: #667b8d !important;
+}
+
+/* CANOSYS: adapta las tarjetas a pantallas angostas sin alterar el flujo operativo. */
+@media (max-width: 959px) {
+  .llamador-simple-card {
+    min-height: auto;
+  }
+
+  .llamador-simple-last-call {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .llamador-simple-page {
+    padding: 14px;
+  }
+
+  .llamador-simple-header {
+    align-items: flex-start;
+    border-radius: 14px;
+  }
+
+  .llamador-simple-card {
+    padding: 18px;
+  }
+}
