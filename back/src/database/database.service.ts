@@ -12,7 +12,8 @@ export const databaseProviders = [
             
             return {
                 synchronize: false,
-                type: 'mariadb',
+                type: 'mysql',
+    connectorPackage: 'mysql2',
                 host: database.host,
                 port: Number(database.port),
                 username: database.user,
