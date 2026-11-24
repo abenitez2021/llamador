@@ -1,4 +1,14 @@
 'use strict';
+// Lee la configuración local desde gateway/.env incluso si npm start
+// se ejecuta desde otra carpeta. No sobreescribe variables del proceso.
+const path = require('node:path');
+const dotenv = require('dotenv');
+const envPath = path.join(__dirname, '.env');
+const envResult = dotenv.config({ path: envPath });
+if (envResult.error && envResult.error.code !== 'ENOENT') {
+  console.error('[PLC] Error al leer gateway/.env:', envResult.error.message);
+  process.exit(1);
+}
 const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
 const { parseButtonEvent } = require('./protocol');
@@ -13,6 +23,34 @@ if (!portName || !apiKey || apiKey.length < 32 || !Number.isInteger(baudRate) ||
     !/^[A-Za-z0-9_-]{1,32}$/.test(controllerId) || !/^https?:\/\//.test(apiUrl)) {
   console.error('[PLC] Configuración inválida. Revisar PLC_PORT, PLC_BAUD_RATE, PLC_CONTROLLER_ID, ENTER_API_URL y ENTER_PLC_KEY (mínimo 32 caracteres).');
   process.exit(1);
+}
+
+console.log(`[PLC] Configuración: puerto ${portName}, velocidad ${baudRate}, controlador ${controllerId}`);
+console.log(`[PLC] API: ${apiUrl} (archivo .env: ${envResult.error ? 'no encontrado; variables del proceso' : 'cargado'})`);
+
+function describeNetworkError(error) {
+  const parts = [];
+  let current = error;
+  for (let i = 0; i < 4 && current; i++) {
+    parts.push(`${current.code ? current.code + ': ' : ''}${current.message || String(current)}`);
+    if (Array.isArray(current.errors)) {
+      parts.push(current.errors.map(e => `${e.code || 'ERROR'} ${e.address || ''}:${e.port || ''}`).join(', '));
+    }
+    current = current.cause;
+  }
+  return parts.join(' | ');
+}
+
+async function checkApi() {
+  const url = `${apiUrl}/puntoatencion/disponibles-cola`;
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(4000) });
+    console.log(`[PLC] Diagnóstico API: GET ${url} -> HTTP ${response.status}`);
+    if (!response.ok) console.warn('[PLC] Revisar URL, puerto, prefijo /api o estado de NestJS/MySQL.');
+  } catch (error) {
+    console.error(`[PLC] No se pudo contactar la API ${url}: ${describeNetworkError(error)}`);
+    console.error('[PLC] Revisar que NestJS esté ejecutándose y que ENTER_API_URL use el puerto API_PORT correcto.');
+  }
 }
 
 let port = null;
@@ -54,7 +92,7 @@ function enqueue(event) {
   queue = queue.then(() => sendEvent(event))
     .catch(error => {
       // No se reintenta automáticamente: ante timeout el servidor puede haber registrado el llamado.
-      console.error(`[PLC] BOX ${event.box}: no se confirmó el llamado: ${error.message}`);
+      console.error(`[PLC] BOX ${event.box}: no se confirmó el llamado en ${apiUrl}: ${describeNetworkError(error)}`);
     })
     .finally(() => { pending--; });
 }
@@ -100,4 +138,5 @@ function stop() {
   if (port && port.isOpen) port.close();
   console.log('[PLC] Deteniendo gateway...');
 }
+checkApi().catch(error => console.error('[PLC] Diagnóstico API:', describeNetworkError(error)));
 connect();
