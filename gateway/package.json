@@ -1,0 +1,16 @@
+{
+  "name": "enter-plc-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Puente serial PLDuino a ENTER API",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "serialport": "^12.0.0"
+  }
+}
