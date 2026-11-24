@@ -41,6 +41,7 @@ import { TurnosModule } from './turnos/turnos.module';
 import { PuntoAtencionModule } from './puntoatencion/puntoatencion.module';
 import { PuntoAtencionController } from './puntoatencion/puntoatencion.controller';
 import { PuntoAtencionService } from './puntoatencion/puntoatencion.service';
+import { HardwareController } from './hardware/hardware.controller';
 
 //informes
 
@@ -75,6 +76,7 @@ import { ErroresLecturaService } from './errores/errores-lectura.service';
         TurnosController, // ✅ Agregado
         TramitesController, // ✅ Agregado
         PuntoAtencionController,
+        HardwareController,
         InformesController,
         ErroresLecturaController,
 
