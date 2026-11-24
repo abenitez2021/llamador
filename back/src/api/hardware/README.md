@@ -22,20 +22,30 @@ Establecer un mapeo **explícito** para cada botón instalado (1–7). La API de
 
 ## Configurar gateway en NUC (Windows / Node.js 18+)
 
-Cerrar el monitor serie Arduino. Desde `gateway/`:
+El gateway ahora lee automáticamente **gateway/.env** gracias a la dependencia `dotenv`. NO subir ese archivo a GitHub (está ignorado por `gateway/.gitignore`).
+
+Cerrar el monitor serie Arduino. Desde la carpeta `gateway/`:
 
 ```powershell
 npm install
+Copy-Item .env.example .env
+notepad .env
 npm test
-$env:PLC_PORT = "COM4"
-$env:PLC_BAUD_RATE = "115200"
-$env:PLC_CONTROLLER_ID = "PLC-01"
-$env:ENTER_API_URL = "http://127.0.0.1:5000/api"
-$env:ENTER_PLC_KEY = "MISMO_SECRETO_LARGO_CONFIGURADO_EN_BACKEND"
 npm start
 ```
 
-Cambiar puerto y URL a los reales. El servicio NO carga `.env` automáticamente: configurar variables del proceso o un lanzador de Windows protegido. El backend debe estar iniciado antes de probar.
+En `gateway/.env`, configurar `PLC_PORT=COM10` (puerto actualmente detectado), `PLC_BAUD_RATE=115200`, `PLC_CONTROLLER_ID=PLC-01`, `ENTER_API_URL=http://127.0.0.1:PUERTO/api` y `ENTER_PLC_KEY` idéntica a la del backend.
+
+**Si antes se configuraron variables usando `$env:...` en PowerShell, esas variables tienen prioridad sobre el archivo nuevo**. Usar una terminal nueva o limpiar las variables antiguas para que el .env tenga efecto.
+
+Para identificar el puerto real, revisar `API_PORT` dentro de `back/.env`. El valor predeterminado del backend es 5000, pero la instalación puede tener otro puerto. Comprobar antes de presionar botones:
+
+```powershell
+Test-NetConnection 127.0.0.1 -Port 5000
+Invoke-RestMethod http://127.0.0.1:5000/api/puntoatencion/disponibles-cola
+```
+
+Sustituir 5000 por el puerto real. Si `TcpTestSucceeded` devuelve `False`, NestJS no está escuchando allí: iniciar el backend o ajustar `ENTER_API_URL`. La nueva salida del Gateway muestra URL, puerto, código HTTP y causa de error (p.ej. `ECONNREFUSED`).
 
 Al pulsar el BOX 3 debe aparecer `BOX 3: llamado registrado`; `GET /api/puntoatencion/disponibles-cola` permite a la pantalla `/public-cola-simple` anunciarlo.
 
